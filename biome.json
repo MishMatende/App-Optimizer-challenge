@@ -1,0 +1,52 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.4.0/schema.json",
+	"organizeImports": {
+		"enabled": false
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"security": {
+				"recommended": true
+			},
+			"performance": {
+				"all": true
+			},
+			"a11y": {
+				"useKeyWithClickEvents": "warn"
+			},
+			"correctness": {
+				"all": true,
+				"useExhaustiveDependencies": "off"
+			},
+			"style": {
+				"noParameterAssign": "warn",
+				"useConst":"warn"
+			},
+			"suspicious": {
+				"all": true,
+				"noExplicitAny": "warn",
+				"noFallthroughSwitchClause": "warn",
+				"noLabelVar": "warn"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"include": [
+			"./src/**/*.{js,jsx,ts,tsx,html}"
+		],
+		"indentStyle": "space",
+		"indentWidth": 4,
+		"lineEnding": "lf",
+		"lineWidth": 100
+	},
+	"files": {
+		"ignore": [
+			"**/fontawesome6/*",
+			"node_modules",
+			".next"
+		]
+	}
+}

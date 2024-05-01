@@ -1,0 +1,23 @@
+# IDEAS For Project
+
+
+## Basic Goals
+1. Financial transactions storage/processing
+    - track every money movement and log reliably
+    - update balances and accounts reliably
+2. Users and Financial accounts
+    - Create, Read, Update, Delete Users
+    - Track user balance (and transactions)
+3. Authentication and Verification of Users
+    - Authentication: only allowed persons can 
+        access and transact through an account
+    - Verification: only legal entities can 
+        create and use an account
+        (KYU - laws)
+4. Multiple user options. eg:
+    - MPesa
+    - Visa
+    - Airtel money
+
+
+## Deeper Goals
