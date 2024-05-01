@@ -17,9 +17,6 @@
     "setupdb": "npm run introspect&&npm run generate&&npm run migrate",
     "refresh": "rm -r .next&&npx next telemetry disable&&npm run dev",
     "update-types": "npx supabase gen types typescript --project-id \"ghtrmopaptjeinhmytip\" --schema public > ./src/server/db/supabase.types.ts --schema auth > ./src/server/db/supabase.auth.types.ts",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
-    "postinstall": "prisma generate",
     "echo": "node ./scriptease.js"
   },
   "dependencies": {
