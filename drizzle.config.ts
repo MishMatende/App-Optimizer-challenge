@@ -1,33 +1,23 @@
-/**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
- * for Docker builds.
- */
-await import("./src/env.js");
-import n from "./make_routes.js"
-n.print()
+import { type Config } from "drizzle-kit";
 
-/** @type {import("next").NextConfig} */
-const config = {
-	reactStrictMode: true,
-	images:{
-		remotePatterns:[{
-			hostname:'lh3.googleusercontent.com',
-			protocol:'https',
-			pathname:'**'
-		}]
+import { env } from "~/env.js";
+
+export default ({
+	schema: ["./src/server/db/schema/index.ts"],
+	introspect:{
+		casing:'preserve'
 	},
-
-	/**
-	 * If you are using `appDir` then you must comment the below `i18n` config out.
-	 *
-	 * @see https://github.com/vercel/next.js/issues/41980
-	 */
-	i18n: {
-		locales: ["en"],
-		defaultLocale: "en",
+	driver: "pg",
+	dbCredentials: {
+		connectionString: env.DATABASE_URL,
 	},
-	crossOrigin:'anonymous',
-	
-};
+	//dbCredentials: {
+	//   connectionString: process.env.DB_URL,
+	// },
+schemaFilter:['public'],
+	verbose: true,
+	out: "./sql",
+	strict: true,
+	tablesFilter: ["cms_*"],
 
-export default config;
+} satisfies Config);
