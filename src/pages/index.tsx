@@ -1,11 +1,12 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+// import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 
-import { api } from "~/utils/api";
+import * as n from "../../make_routes.mjs"
+import { GetServerSideProps } from "next";
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  const hello = {data:{greeting:"hello"}} //api.post.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>
@@ -54,14 +55,22 @@ export default function Home() {
     </>
   );
 }
+const  signOut = ()=>{
+    console.log("user attempted to signout")
+}
 
+const signIn = () => {
+  console.log("user attempted to signin")
+}
 function AuthShowcase() {
-  const { data: sessionData } = useSession();
+  const { data: sessionData } = {data:{user:{name:"temporary name"}}} // useSession();
+  
 
-  const { data: secretMessage } = api.post.getSecretMessage.useQuery(
+  const { data: secretMessage } = {data:"this is a secret message"} /*api.post.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined }
   );
+*/
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
@@ -70,6 +79,7 @@ function AuthShowcase() {
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
       <button
+      type="button"
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
@@ -77,4 +87,12 @@ function AuthShowcase() {
       </button>
     </div>
   );
+}
+
+
+export const getServerSideProps:GetServerSideProps = async()=>{
+  n.ping()
+  return {
+    props:{}
+  }
 }

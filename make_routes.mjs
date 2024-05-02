@@ -12,7 +12,7 @@ const path_after_pages = (p_) =>
 /**
  * @type {Record<string,string|object>}
  */
-let routes = {};
+export let routes = {};
 
 /**
  *
@@ -31,8 +31,8 @@ function executor(paths, name, grimace) {
         }
 
         const n_ = path_after_pages(name.path).join("/");
-        const jl = `${n_ ? `/${n_}` : ""}${jd !== 'index'?`/${jd}`:''}`;
-        grimace[jd] = jl === ""?'/':jl;
+        const jl = `${n_ ? `/${n_}` : ""}${jd !== "index" ? `/${jd}` : ""}`;
+        grimace[jd] = jl === "" ? "/" : jl;
 
         return grimace;
     }
@@ -68,18 +68,15 @@ if (process.env.NODE_ENV === "development") {
             executor(j, v, routes);
         });
 
-    
     fs.writeFileSync("./src/server/routes.json", JSON.stringify(routes, null, 4), {
         encoding: "utf-8",
         flag: "w",
     });
 }
-module.exports = {
-    routes,
-    ping() {
-        console.log("ping");
-    },
-    print(){
-        console.log(routes);
-    },
-};
+
+export function ping() {
+    console.log("ping");
+}
+export function print() {
+    console.log(routes);
+}

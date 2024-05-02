@@ -21,8 +21,6 @@ export const db = await registerService(
 		client.then((cl) =>
 			drizzle(cl, {
 				schema,
-				
-				
 			}),
 		),
 );
