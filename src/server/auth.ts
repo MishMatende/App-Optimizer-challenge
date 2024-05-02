@@ -1,78 +1,47 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { type GetServerSidePropsContext } from "next";
-import {
-  getServerSession,
-  type DefaultSession,
-  type NextAuthOptions,
-} from "next-auth";
-import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
+import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
+import { NextApiRequest, NextApiResponse, type GetServerSidePropsContext } from "next";
 
-import { env } from "~/env";
-import { db } from "~/server/db";
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: DefaultSession["user"] & {
-      id: string;
-      // ...other properties
-      // role: UserRole;
-    };
-  }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
-}
-
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
- *
- * @see https://next-auth.js.org/configuration/options
- */
-export const authOptions: NextAuthOptions = {
-  callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
-  },
-  adapter: PrismaAdapter(db) as Adapter,
-  providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
-  ],
-};
+// For more information on each option (and a full list of options) go to
+// // https://authjs.dev/reference/core#authconfig
+// export default NextAuth({
+//   // https://authjs.dev/reference/core/providers
+//   providers: [...],
+//   adapter: SupabaseAdapter({
+//     url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+//     secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
+//   }),
+//   // ...
+// })
 
 /**
  * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
+export const getServerAuthSession = async (
+    ctx: GetServerSidePropsContext | { req: NextApiRequest; res: NextApiResponse },
+) => {
+    // Create authenticated Supabase Client
+
+    const supabase = createPagesServerClient(ctx);
+    const sess = supabase.auth.getSession();
+    const user_ = supabase.auth.getUser();
+
+    // Check if we have a session
+    const {
+        data: { session },
+    } = await sess;
+
+	if (!session) {
+        return null;
+    }
+    const { data: user } = await user_;
+
+    if (!user.user) {
+        return null;
+    }
+
+    
+    return { ...session, user: user.user };
 };
