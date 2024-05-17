@@ -1,4 +1,7 @@
 {
+    "_app": "/_app",
     "index": "/",
-    "_app": "/_app"
+    "src/pages/userAuth": {
+        "index": "/src/pages/userAuth"
+    }
 }
