@@ -1,10 +1,13 @@
+"use client";
+
 import { KeyRound } from "lucide-react";
 import { Button } from "~/lib/ui/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { supabaseBrowser } from "~/lib/supabase/browser";
+import { FaGithub } from "react-icons/fa";
 
-const LoginPage = () => {
-  const handleLoginWithOAuth = (provider: "google") => {
+export default function page() {
+  const handleLoginWithOAuth = (provider: "google" | "github") => {
     const supabase = supabaseBrowser();
     supabase.auth.signInWithOAuth({
       provider,
@@ -12,6 +15,7 @@ const LoginPage = () => {
         redirectTo: location.origin + "/auth/callback",
       },
     });
+    console.log(`${location.origin}`);
   };
 
   return (
@@ -30,10 +34,15 @@ const LoginPage = () => {
           >
             <FcGoogle /> Google
           </Button>
+          <Button
+            className="w-full flex items-center gap-2"
+            variant="outline"
+            onClick={() => handleLoginWithOAuth("github")}
+          >
+            <FaGithub /> GitHub
+          </Button>
         </div>
       </div>
     </div>
   );
-};
-
-export default LoginPage;
+}
