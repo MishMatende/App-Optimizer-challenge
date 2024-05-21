@@ -12,7 +12,7 @@ export default function page() {
     supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: location.origin + "/auth/callback",
+        redirectTo: location.origin + "/dashboard",
       },
     });
   };
