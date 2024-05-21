@@ -18,7 +18,8 @@
 			},
 			"correctness": {
 				"all": true,
-				"useExhaustiveDependencies": "off"
+				"useExhaustiveDependencies": "off",
+				"noUnreachable":"warn"
 			},
 			"style": {
 				"noParameterAssign": "warn",

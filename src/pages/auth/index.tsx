@@ -5,14 +5,15 @@ import { Button } from "~/lib/ui/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { supabaseBrowser } from "~/lib/supabase/browser";
 import { FaGithub } from "react-icons/fa";
+import { env } from "~/env";
 
-export default function page() {
+export default function Page() {
   const handleLoginWithOAuth = (provider: "google" | "github") => {
     const supabase = supabaseBrowser();
     supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: location.origin + "/dashboard",
+        redirectTo: `${env.HOME_URL}/auth/confirm`,
       },
     });
   };
