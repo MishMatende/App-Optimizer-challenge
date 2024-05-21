@@ -15,7 +15,6 @@ export default function page() {
         redirectTo: location.origin + "/auth/callback",
       },
     });
-    console.log(`${location.origin}`);
   };
 
   return (
